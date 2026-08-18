@@ -52,14 +52,15 @@
     border-bottom:1px solid var(--border);
   }
   nav.wrap{
-    display:flex;justify-content:flex-end;align-items:center;
+    display:flex;justify-content:center;align-items:center;
     height:72px;
   }
-  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links{display:flex;gap:20px;list-style:none;width:100%;justify-content:space-between;}
   .nav-links a{
     font-size:14px;color:var(--text-dim);
     transition:color .2s;
     position:relative;
+    white-space:nowrap;
   }
   .nav-links a:hover{color:var(--accent);}
   .nav-links a::after{
@@ -68,17 +69,6 @@
     transition:width .25s;
   }
   .nav-links a:hover::after{width:100%;}
-  .nav-toggle{display:none;background:none;border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;cursor:pointer;}
-  @media(max-width:768px){
-    .nav-links{
-      position:fixed;top:72px;left:0;right:0;
-      background:var(--bg);border-bottom:1px solid var(--border);
-      flex-direction:column;padding:16px 24px;gap:16px;
-      transform:translateY(-150%);transition:transform .3s;
-    }
-    .nav-links.open{transform:translateY(0);}
-    .nav-toggle{display:block;}
-  }
 
   /* ===== HERO ===== */
   .hero{
@@ -345,17 +335,18 @@
 
   /* Responsive tweaks: improve spacing, touch targets, and stacking on small devices */
   img{max-width:100%;height:auto;display:block;border-radius:6px;}
-  .nav-toggle{padding:10px 12px;font-size:18px;}
 
   @media (max-width:480px){
     .wrap{padding:0 16px;}
-    nav.wrap{height:64px;}
+    nav.wrap{height:56px;}
     header{border-bottom-width:1px;}
-    .hero{padding-top:64px;}
+    .nav-links{gap:0;}
+    .nav-links a{font-size:11px;}
+    .hero{padding-top:56px;}
     .hero h1{font-size:clamp(28px,9vw,44px);}
     .hero p.tagline{font-size:16px;}
-    .hero-cta{margin-top:18px;gap:10px;}
-    .hero-cta .btn{flex:1 1 100%;justify-content:center;padding:10px 14px;font-size:14px;}
+    .hero-cta{margin-top:18px;gap:8px;}
+    .hero-cta .btn{flex:0 1 auto;padding:8px 12px;font-size:12px;}
     .btn{font-size:14px;padding:10px 16px;border-radius:8px;}
     section{padding:56px 0;}
     .section-title{margin-bottom:28px;}
@@ -390,7 +381,6 @@
       <li><a href="#experience">Experience</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
   </nav>
 </header>
 
@@ -414,8 +404,8 @@
     <h2 class="section-title">About Me</h2>
     <div class="about-grid">
       <div class="about-text">
-        <p>Software developer with hands-on experience building products end-to-end, from designing intuitive interfaces to writing the logic and systems that power them. Comfortable working with React, Node.js, PostgreSQL, and Firebase, with a UI/UX foundation that shapes how every feature comes together, and a growing interest in how data and machine learning can make products smarter.</p>
-        <p>What drives the work is curiosity and a genuine care for the people using what gets built. Always learning something new, whether it is a framework, a design pattern, or a different way of thinking about a problem, with the goal of shipping things that are technically solid and genuinely useful.</p>
+        <p>My curiosity for software development grew through hands-on experience building products end-to-end, from designing interfaces in UI/UX to writing the systems that power them behind the scenes. Working on AIBISPRO, a business intelligence platform with real machine learning integration, deepened my enthusiasm for how thoughtful engineering and design can turn raw data into decisions people actually trust.</p>
+        <p>That drive has since carried me across UI/UX, frontend, full-stack development, and early explorations in data and AI, always circling back to the same question: how can this genuinely help the person using it? I stay close to new tools and ideas on purpose, because curiosity is what keeps the work improving, and real impact, not just polish, is what I'm ultimately building toward.</p>
       </div>
       <div class="about-facts">
         <div class="fact"><span>Location</span><span>Jawa Barat, ID</span></div>
@@ -573,12 +563,6 @@
 </footer>
 
 <script>
-  // Mobile nav toggle
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
-
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
