@@ -354,12 +354,16 @@
     .hero{padding-top:64px;}
     .hero h1{font-size:clamp(28px,9vw,44px);}
     .hero p.tagline{font-size:16px;}
-    .hero-cta{margin-top:20px;gap:12px;}
-    .hero-cta .btn{flex:1 1 100%;justify-content:center;padding:12px 16px;}
-    .btn{font-size:15px;padding:12px 16px;border-radius:10px;}
+    .hero-cta{margin-top:18px;gap:10px;}
+    .hero-cta .btn{flex:1 1 100%;justify-content:center;padding:10px 14px;font-size:14px;}
+    .btn{font-size:14px;padding:10px 16px;border-radius:8px;}
+    section{padding:56px 0;}
+    .section-title{margin-bottom:28px;}
     .project-card{padding:18px;}
     .contact-box{padding:24px;}
     .about-grid{gap:18px;}
+    .fact{font-size:13px;}
+    .fact-wrap span:last-child{text-align:right;max-width:62%;}
     .skills-field{min-height:320px;padding:16px;}
     .hero-meta{display:none;}
   }
@@ -416,7 +420,7 @@
       <div class="about-facts">
         <div class="fact"><span>Location</span><span>Jawa Barat, ID</span></div>
         <div class="fact"><span>Focus</span><span>Full-Stack Dev · AI</span></div>
-        <div class="fact"><span>Also exploring</span><span>UI/UX · Data Analyst · Cloud Engineer</span></div>
+        <div class="fact fact-wrap"><span>Also exploring</span><span>UI/UX · Data Analyst · Cloud Engineer</span></div>
       </div>
     </div>
   </div>
@@ -582,7 +586,7 @@
   }, {threshold:0.12});
   reveals.forEach(el => io.observe(el));
 
-  // ===== Skills & Languages: fixed-slot smooth crossfade (no overlap, clear timing) =====
+  // ===== Skills & Languages: randomized, collision-free popup layout =====
   const technical = ["JavaScript","TypeScript","Python","Java","PHP","HTML","SQL","React","Node.js","NestJS","PostgreSQL","Firebase","Git"];
   const languages = ["Bahasa Indonesia (Native)","English (Fluent)"];
   const allSkills = [
@@ -591,58 +595,79 @@
   ];
   const field = document.getElementById('skillsField');
 
-  // Fixed, non-overlapping slot positions, compact grid so the box always reads as full
-  const slotPositions = [
-    {top:'14%', left:'6%'},
-    {top:'10%', left:'38%'},
-    {top:'16%', left:'68%'},
-    {top:'42%', left:'12%'},
-    {top:'46%', left:'44%'},
-    {top:'40%', left:'76%'},
-    {top:'74%', left:'8%'},
-    {top:'78%', left:'40%'},
-    {top:'70%', left:'70%'}
-  ];
-
-  const FADE_MS = 600;      // matches CSS transition duration
-  const HOLD_MS = 3200;     // how long each chip stays visible before swapping
-  const SLOT_STAGGER_MS = 420; // gap between each slot's first appearance, so pop-ins never sync
+  // Each chip picks a fresh random spot every cycle; candidates that would overlap an
+  // already-visible chip or spill past the box edge are rejected and re-rolled.
+  const CHIP_GAP = 16;         // min space kept between chips
+  const EDGE_GAP = 10;         // min space kept from the box edge (on top of the box's own CSS padding)
+  const FADE_MS = 600;         // matches CSS transition duration
+  const MIN_HOLD_MS = 2200;    // shortest time a chip stays visible
+  const MAX_HOLD_MS = 4400;    // longest time a chip stays visible, randomized per pop so cycles desync
+  const SLOT_STAGGER_MS = 380; // gap between each slot's first appearance, so pop-ins never sync
 
   function randBetween(min, max){ return Math.random() * (max - min) + min; }
 
   function buildSlots(){
     field.querySelectorAll('.skill-chip').forEach(c => c.remove());
-    const usableSlots = window.innerWidth < 640 ? slotPositions.slice(0,6) : slotPositions;
-    return usableSlots.map((pos, i) => {
+    const count = window.innerWidth < 640 ? 6 : 9;
+    return Array.from({length: count}, (_, i) => {
       const chip = document.createElement('span');
       chip.className = 'skill-chip';
-      chip.style.top = pos.top;
-      chip.style.left = pos.left;
       field.appendChild(chip);
-      return { el: chip, pos, cursor: i, paused:false };
+      return { el: chip, cursor: i, rect: null, paused: false };
     });
+  }
+
+  function clampRange(containerSize, chipSize, gap){
+    let min = gap, max = containerSize - chipSize - gap;
+    if(max < min){ min = 0; max = Math.max(0, containerSize - chipSize); } // chip too big for a full gap: shrink gap, never let it exit the box
+    return [min, max];
+  }
+
+  function rectsCollide(a, b, gap){
+    return !(a.right + gap <= b.left || b.right + gap <= a.left ||
+             a.bottom + gap <= b.top || b.bottom + gap <= a.top);
+  }
+
+  function findFreeRect(chipW, chipH, containerW, containerH, others){
+    const [minX, maxX] = clampRange(containerW, chipW, EDGE_GAP);
+    const [minY, maxY] = clampRange(containerH, chipH, EDGE_GAP);
+    let fallback = null, fallbackCollisions = Infinity;
+    for(let attempt = 0; attempt < 60; attempt++){
+      const left = randBetween(minX, maxX);
+      const top = randBetween(minY, maxY);
+      const rect = {left, top, right: left + chipW, bottom: top + chipH};
+      const collisions = others.filter(r => rectsCollide(rect, r, CHIP_GAP)).length;
+      if(collisions === 0) return rect;
+      if(collisions < fallbackCollisions){ fallbackCollisions = collisions; fallback = rect; }
+    }
+    return fallback; // box too crowded for a clean spot: use the least-overlapping candidate found (still fully inside the box)
+  }
+
+  function scheduleHide(slot, slots){
+    if(slot.paused){ slot.timer = setTimeout(() => scheduleHide(slot, slots), 300); return; }
+    slot.el.classList.remove('visible');
+    slot.timer = setTimeout(() => {
+      slot.cursor += slots.length;
+      runSlot(slot, slots);
+    }, FADE_MS);
   }
 
   function runSlot(slot, slots){
     const item = allSkills[slot.cursor % allSkills.length];
-    slot.el.textContent = item.label;
+    const maxFont = item.label.length > 16 ? 14 : 18; // long labels (e.g. language names) get a smaller cap so they don't overflow the box
     slot.el.classList.toggle('lang', item.lang);
-    // vary font size a little each time so the field reads full, not just repetitive dots of text
-    slot.el.style.fontSize = randBetween(12, 18).toFixed(0) + 'px';
+    slot.el.textContent = item.label;
+    slot.el.style.fontSize = Math.round(randBetween(12, maxFont)) + 'px';
+
+    const others = slots.filter(s => s !== slot && s.rect).map(s => s.rect);
+    const rect = findFreeRect(slot.el.offsetWidth, slot.el.offsetHeight, field.clientWidth, field.clientHeight, others);
+    slot.rect = rect;
+    slot.el.style.left = rect.left + 'px';
+    slot.el.style.top = rect.top + 'px';
 
     requestAnimationFrame(() => slot.el.classList.add('visible'));
-
-    slot.timer = setTimeout(() => {
-      if(slot.paused){ slot.timer = setTimeout(() => runSlotResume(slot, slots), 300); return; }
-      slot.el.classList.remove('visible');
-      slot.timer = setTimeout(() => {
-        slot.cursor += slots.length;
-        runSlot(slot, slots);
-      }, FADE_MS);
-    }, HOLD_MS);
+    slot.timer = setTimeout(() => scheduleHide(slot, slots), randBetween(MIN_HOLD_MS, MAX_HOLD_MS));
   }
-
-  function runSlotResume(slot, slots){ runSlot(slot, slots); }
 
   function startSkills(){
     const slots = buildSlots();
