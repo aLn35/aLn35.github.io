@@ -93,7 +93,7 @@
   .hero-right img{
     position:absolute;inset:0;
     width:100%;height:100%;
-    object-fit:cover;object-position:50% 76%;
+    object-fit:cover;object-position:50% 60%;
   }
   .hero-right::after{
     content:'';
@@ -276,7 +276,7 @@
     gap:16px;flex-wrap:wrap;
     margin-bottom:12px;
   }
-  .project-top h3{font-size:22px;font-weight:600;}
+  .project-top h3{font-size:18px;font-weight:600;}
   .project-role{
     font-family:'JetBrains Mono',monospace;
     font-size:12px;color:var(--accent);
@@ -284,7 +284,7 @@
     padding:4px 10px;border-radius:999px;
     white-space:nowrap;
   }
-  .project-card p.desc{color:var(--text-dim);font-size:15px;margin-bottom:16px;}
+  .project-card p.desc{color:var(--text-dim);font-size:14px;margin-bottom:16px;}
   .tech-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
   .tech-tags span{
     font-family:'JetBrains Mono',monospace;
@@ -341,7 +341,7 @@
     transition:border-color .25s, box-shadow .25s;
   }
   .cert-card:hover{border-color:var(--accent); box-shadow:0 0 20px rgba(197,140,147,0.12);}
-  .cert-card h4{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .cert-card h4{font-size:18px;font-weight:600;margin-bottom:4px;}
   .cert-card span{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);}
 
   /* ===== CONTACT ===== */
@@ -684,7 +684,7 @@
     const maxFont = item.label.length > 16 ? 14 : 18; // long labels (e.g. language names) get a smaller cap so they don't overflow the box
     slot.el.classList.toggle('lang', item.lang);
     slot.el.textContent = item.label;
-    slot.el.style.fontSize = Math.round(randBetween(12, maxFont)) + 'px';
+    slot.el.style.fontSize = window.innerWidth < 640 ? '10px' : Math.round(randBetween(12, maxFont)) + 'px';
 
     const others = slots.filter(s => s !== slot && s.rect).map(s => s.rect);
     const rect = findFreeRect(slot.el.offsetWidth, slot.el.offsetHeight, field.clientWidth, field.clientHeight, others);
