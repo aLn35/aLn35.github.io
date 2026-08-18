@@ -72,28 +72,28 @@
 
   /* ===== HERO ===== */
   .hero{
-    position:relative;
-    min-height:100vh;
+    padding-top:132px;
+    padding-bottom:64px;
   }
   .hero-split{
-    position:relative;
     display:grid;
-    grid-template-columns:1fr 1fr;
-    min-height:100vh;
+    grid-template-columns:1.05fr 1fr;
+    gap:56px;
+    align-items:center;
   }
   .hero-left{
     display:flex;flex-direction:column;justify-content:center;
-    padding:104px clamp(24px,5vw,64px) 56px max(24px, calc(50vw - 516px));
   }
   .hero-right{
     position:relative;
+    aspect-ratio:1/1;
+    border-radius:var(--radius);
     overflow:hidden;
   }
   .hero-right img{
     position:absolute;inset:0;
     width:100%;height:100%;
-    object-fit:cover;object-position:20% 30%;
-    border-radius:0;
+    object-fit:cover;object-position:50% 76%;
   }
   .hero-right::after{
     content:'';
@@ -105,8 +105,8 @@
     pointer-events:none;
   }
   .hero-caption{
-    position:absolute;left:24px;right:24px;bottom:22px;z-index:2;
-    font-size:12px;letter-spacing:.03em;color:var(--text);
+    position:absolute;left:16px;right:16px;bottom:14px;z-index:2;
+    font-size:11px;letter-spacing:.03em;color:var(--text);
     text-shadow:0 1px 10px rgba(0,0,0,.6);
     pointer-events:none;
   }
@@ -172,12 +172,9 @@
   @media(max-width:768px){ .hero-meta{display:none;} }
 
   @media(max-width:900px){
-    .hero{min-height:0;}
-    .hero-split{grid-template-columns:1fr;min-height:0;}
-    .hero-right{order:-1;aspect-ratio:4/3;padding:0 20px;}
-    .hero-right img{border-radius:var(--radius);object-position:50% 86%;}
-    .hero-left{padding:32px 20px 48px;}
-    .hero-caption{left:14px;right:14px;bottom:14px;font-size:10px;}
+    .hero{padding-top:96px;padding-bottom:40px;}
+    .hero-split{grid-template-columns:1fr;gap:28px;}
+    .hero-right{order:-1;}
   }
 
   /* ===== SECTION LABEL ===== */
@@ -291,7 +288,7 @@
   .tech-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
   .tech-tags span{
     font-family:'JetBrains Mono',monospace;
-    font-size:12px;color:var(--text-dim);
+    font-size:10px;color:var(--text-dim);
     border:1px solid var(--border);
     padding:5px 12px;border-radius:999px;
   }
@@ -423,7 +420,7 @@
 </header>
 
 <section class="hero" id="hero">
-  <div class="hero-split">
+  <div class="hero-split wrap">
     <div class="hero-left">
       <div class="eyebrow mono">AVAILABLE FOR ALL OPPORTUNITIES</div>
       <h1>Anjelin L Nainggolan<br><span>Software Developer.</span></h1>
