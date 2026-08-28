@@ -264,13 +264,26 @@
     border:1px solid var(--border);
     background:var(--surface);
     border-radius:var(--radius);
-    padding:32px;
+    overflow:hidden;
     transition:border-color .25s, box-shadow .25s;
   }
   .project-card:hover{
     border-color:var(--accent);
     box-shadow:0 0 32px rgba(197,140,147,0.15);
   }
+  .project-cover{
+    width:100%;aspect-ratio:16/9;
+    overflow:hidden;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--border);
+  }
+  .project-cover img{
+    width:100%;height:100%;object-fit:cover;object-position:top center;
+    margin:0;border-radius:0;
+    transition:transform .4s ease;
+  }
+  .project-card:hover .project-cover img{transform:scale(1.03);}
+  .project-body{padding:32px;}
   .project-top{
     display:flex;justify-content:space-between;align-items:flex-start;
     gap:16px;flex-wrap:wrap;
@@ -498,58 +511,69 @@
     <div class="projects-list">
 
       <div class="project-card">
-        <div class="project-top">
-          <h3>AIBISPRO: AI-Powered Business Intelligence Platform</h3>
-          <span class="project-role">Full-Stack Developer</span>
-        </div>
-        <p class="desc">A multi-tenant BI platform for retail & F&B, built across three services: role-based dashboards, an approval workflow for restocking, bundling, and promotions, ML-backed demand forecasting (Random Forest, Holt-Winters, Apriori), and a bilingual (EN/ID) AI assistant powered by Gemini.</p>
-        <div class="tech-tags">
-          <span>React 19</span><span>TypeScript</span><span>NestJS</span><span>Prisma</span><span>PostgreSQL</span><span>FastAPI</span><span>Gemini API</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/aLn35/AIBISPRO-FIX" target="_blank" rel="noopener">↗ GitHub Repo</a>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-top">
-          <h3>KRS-Mama: Palm Oil Transaction System</h3>
-          <span class="project-role">Android Developer · Solo Project</span>
-        </div>
-        <p class="desc">A native Android app digitizing end-to-end palm oil trading for small to medium collection centers, automating transaction calculations, debt tracking, and PDF invoicing.</p>
-        <div class="tech-tags">
-          <span>Java</span><span>Android Studio</span><span>Firebase Auth</span><span>Firestore</span><span>Cloud Storage</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/aLn35/AN-OIL-PALM-RAM-APPLICATION" target="_blank" rel="noopener">↗ GitHub Repo</a>
+        <div class="project-cover"><img src="assets/project-aibispro.jpg" alt="AIBISPRO business intelligence platform dashboard" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-top">
+            <h3>AIBISPRO: AI-Powered Business Intelligence Platform</h3>
+            <span class="project-role">Full-Stack Developer</span>
+          </div>
+          <p class="desc">A multi-tenant BI platform for retail & F&B, built across three services: role-based dashboards, an approval workflow for restocking, bundling, and promotions, ML-backed demand forecasting (Random Forest, Holt-Winters, Apriori), and a bilingual (EN/ID) AI assistant powered by Gemini.</p>
+          <div class="tech-tags">
+            <span>React 19</span><span>TypeScript</span><span>NestJS</span><span>Prisma</span><span>PostgreSQL</span><span>FastAPI</span><span>Gemini API</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/aLn35/AIBISPRO-FIX" target="_blank" rel="noopener">↗ GitHub Repo</a>
+          </div>
         </div>
       </div>
 
       <div class="project-card">
-        <div class="project-top">
-          <h3>Recreo: Waste Recycling Education Platform</h3>
-          <span class="project-role">UI/UX Designer</span>
-        </div>
-        <p class="desc">End-to-end UI/UX design in Figma for a web platform that teaches children and communities how to upcycle household waste through step-by-step guides, a community creation gallery, and a Kahoot-style educational quiz game.</p>
-        <div class="tech-tags">
-          <span>Figma</span><span>UI/UX Research</span><span>Design System</span>
-        </div>
-        <div class="project-links">
-          <a href="https://figma.com/design/yHzkQ8VCN6kDeB5v9XwteP/Recreo" target="_blank" rel="noopener">↗ Figma File</a>
+        <div class="project-cover"><img src="assets/project-krs-mama.jpg" alt="KRS-Mama Android app transaction screens" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-top">
+            <h3>KRS-Mama: Palm Oil Transaction System</h3>
+            <span class="project-role">Android Developer · Solo Project</span>
+          </div>
+          <p class="desc">A native Android app digitizing end-to-end palm oil trading for small to medium collection centers, automating transaction calculations, debt tracking, and PDF invoicing.</p>
+          <div class="tech-tags">
+            <span>Java</span><span>Android Studio</span><span>Firebase Auth</span><span>Firestore</span><span>Cloud Storage</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/aLn35/AN-OIL-PALM-RAM-APPLICATION" target="_blank" rel="noopener">↗ GitHub Repo</a>
+          </div>
         </div>
       </div>
 
       <div class="project-card">
-        <div class="project-top">
-          <h3>Hotel Management System</h3>
-          <span class="project-role">Java Developer</span>
+        <div class="project-body">
+          <div class="project-top">
+            <h3>Recreo: Waste Recycling Education Platform</h3>
+            <span class="project-role">UI/UX Designer</span>
+          </div>
+          <p class="desc">End-to-end UI/UX design in Figma for a web platform that teaches children and communities how to upcycle household waste through step-by-step guides, a community creation gallery, and a Kahoot-style educational quiz game.</p>
+          <div class="tech-tags">
+            <span>Figma</span><span>UI/UX Research</span><span>Design System</span>
+          </div>
+          <div class="project-links">
+            <a href="https://figma.com/design/yHzkQ8VCN6kDeB5v9XwteP/Recreo" target="_blank" rel="noopener">↗ Figma File</a>
+          </div>
         </div>
-        <p class="desc">A Java-based desktop application for managing hotel operations: room data, bookings, check-in, and check-out. Built with Java Swing for the GUI and MySQL as the database, with several functional modules to help admins manage hotel operations efficiently. Built as a project for the Object Oriented Visual Programming course.</p>
-        <div class="tech-tags">
-          <span>Java</span><span>Java Swing</span><span>MySQL</span><span>OOP</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/aLn35/oovp_ManagementHotel_p2H" target="_blank" rel="noopener">↗ GitHub Repo</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-cover"><img src="assets/project-hotel-management.jpg" alt="Hotel Management System checkout screen" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-top">
+            <h3>Hotel Management System</h3>
+            <span class="project-role">Java Developer</span>
+          </div>
+          <p class="desc">A Java-based desktop application for managing hotel operations: room data, bookings, check-in, and check-out. Built with Java Swing for the GUI and MySQL as the database, with several functional modules to help admins manage hotel operations efficiently. Built as a project for the Object Oriented Visual Programming course.</p>
+          <div class="tech-tags">
+            <span>Java</span><span>Java Swing</span><span>MySQL</span><span>OOP</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/aLn35/oovp_ManagementHotel_p2H" target="_blank" rel="noopener">↗ GitHub Repo</a>
+          </div>
         </div>
       </div>
 
@@ -649,6 +673,26 @@
           <span class="cert-issuer">28DIGITAL · Coursera</span>
           <span class="cert-date">Issued Aug 2026</span>
           <a class="cert-verify" href="https://coursera.org/verify/O23RN8JUOY8N" target="_blank" rel="noopener">Verify ↗</a>
+        </div>
+      </div>
+      <div class="cert-card">
+        <a class="cert-thumb" href="assets/certs/certificate-chinese-culture.jpg" target="_blank" rel="noopener" aria-label="View full certificate: Chinese Traditional Culture Experience">
+          <img src="assets/certs/certificate-chinese-culture.jpg" alt="Chinese Traditional Culture Experience certificate" loading="lazy">
+        </a>
+        <div class="cert-body">
+          <h4>Chinese Traditional Culture Experience Certificate</h4>
+          <span class="cert-issuer">Fuzhou University International Studies and Trade</span>
+          <span class="cert-date">Issued Apr 2026</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <a class="cert-thumb" href="assets/certs/certificate-zherong-culture.jpg" target="_blank" rel="noopener" aria-label="View full certificate: Zherong Cultural Experience">
+          <img src="assets/certs/certificate-zherong-culture.jpg" alt="Zherong Cultural Experience certificate" loading="lazy">
+        </a>
+        <div class="cert-body">
+          <h4>Zherong Cultural Experience Certificate</h4>
+          <span class="cert-issuer">Fuzhou University International Studies and Trade</span>
+          <span class="cert-date">Issued Apr 2026</span>
         </div>
       </div>
       <div class="cert-card">
